@@ -1,14 +1,109 @@
 ﻿#include <iostream>
 
-int Rec(int i, int n, int step, int current) {
-	return i < n ? Rec(i + 1, n, step, current + step) : current;
-}
+using namespace std;
+
+//Прототип функции сотировки
+
+bool Sort(int* arr, int n, int left);
 
 int main()
+
 {
-	int step = 4;
-	int n = 4;
-	std::cout << Rec(1, n, step, 0) << "\n";
-	system("pause");
-	return(0);
+
+	//-----------------------------
+
+	//Создали и заполнили динамический массив
+
+	int n = 10;
+
+	int* arr = new int[n];
+
+	for (int i = 0; i < n; i++)
+
+		arr[i] = n - i;
+
+	for (int i = 0; i < n; i++)
+
+		cout << arr[i] << " ";
+
+	cout << endl << endl;
+
+	//-------------------------------
+
+	//Сортируем массив
+
+	int left = 0;
+
+	Sort(arr, n, left);
+
+	for (int i = 0; i < n; i++)
+
+		cout << arr[i] << " ";
+
+	//--------------------------------
+
+	return 0;
+
+}
+
+//Рекурсивная функция сортировки
+
+bool Sort(int* arr, int n, int left) //аргументы: массив, размер массива, левая граница (которая будет постепенно сдвигаться вправо, пока не дойдёт до конца массива)
+
+{
+
+	if (left == n) //Если левая граница достигла конца массива, тогда больше не сортируем и выходим
+
+		return true;
+
+	else
+
+	{
+
+		//Принимаем за минимальный элемент тот элемент, который стоит на левой границе
+
+		int minimal = arr[left];
+
+		int minIND = left;
+
+		//Ищем минимум в массиве, начиная с левой границы и до конца массива
+
+		for (int i = left; i < n; i++)
+
+		{
+
+			//Если у нас нашёлся новый минимум, запоминаем его и его место в массиве
+
+			if (arr[i] < minimal)
+
+			{
+
+				minimal = arr[i];
+
+				minIND = i;
+
+			}
+
+		}
+
+		//Меняем местами элемент, стоящий на левой границе, и найденный минимальный элемент
+
+		int temp;
+
+		temp = arr[left];
+
+		arr[left] = arr[minIND];
+
+		arr[minIND] = temp;
+
+		//Сдвигаем левую границу вправо на один элемент
+
+		left++;
+
+		//Снова запускает сортировку, но уже с новым положением (сдвинутым) левой границы
+
+		return Sort(arr, n, left);
+
+	}
+
 }
